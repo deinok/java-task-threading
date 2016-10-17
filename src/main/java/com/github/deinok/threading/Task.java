@@ -14,10 +14,6 @@ public class Task<T> {
 
     @Nullable
     private T result;
-
-    @NotNull
-    private TaskState taskState = TaskState.NotStarted;
-
     //endregion
 
     //region Constructors
@@ -26,9 +22,7 @@ public class Task<T> {
         this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                taskState = TaskState.Started;
                 result = function.execute();
-                taskState = TaskState.Finished;
             }
         });
     }
@@ -38,7 +32,7 @@ public class Task<T> {
     //region Executors
     @NotNull
     public Task<T> executeAsync() {
-        if (this.taskState == TaskState.NotStarted) {
+        if (this.thread.getState() == Thread.State.NEW) {
             this.thread.start();
         }
         return this;
@@ -46,7 +40,7 @@ public class Task<T> {
 
     @NotNull
     public Task<T> executeSync() {
-        if (this.taskState == TaskState.NotStarted) {
+        if (this.thread.getState() == Thread.State.NEW) {
             this.thread.run();
         }
         return this;
@@ -60,31 +54,26 @@ public class Task<T> {
      */
     @NotNull
     public Task<T> await() {
-        switch (this.taskState) {
-            case NotStarted:
+        switch (this.thread.getState()) {
+            case NEW:
                 return this.executeAsync().await();
-            case Started:
+            case RUNNABLE:
                 try {
                     this.thread.join();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 return this.await();
-            case Finished:
+            case TERMINATED:
                 return this;
         }
-        throw new IllegalStateException();
+        throw new IllegalThreadStateException();
     }
 
     @Nullable
     public T getResult() {
         this.await();
         return this.await().result;
-    }
-
-    @NotNull
-    public TaskState getTaskState() {
-        return this.taskState;
     }
 
 }

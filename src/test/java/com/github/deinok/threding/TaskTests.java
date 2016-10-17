@@ -28,6 +28,7 @@ public class TaskTests {
         }
         task.await();
     }
+
     @Test
     public void resultIntegerTest(){
         Task<Integer> task = new Task<Integer>(new TaskRunnable<Integer>() {
