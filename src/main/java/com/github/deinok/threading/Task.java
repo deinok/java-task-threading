@@ -80,8 +80,9 @@ public class Task<T> {
         return this.result;
     }
 
-    public void onSuccess(@NotNull OnSuccess<T> onSuccess){
+    public Task<T> onSuccess(@NotNull OnSuccess<T> onSuccess){
         this.onSuccess=onSuccess;
+        return this;
     }
 
 }
