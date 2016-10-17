@@ -1,9 +1,11 @@
 package com.github.deinok.threading;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-
+/**
+ * @param <T>
+ */
 public class Task<T> {
 
     //region Variables
@@ -56,6 +58,7 @@ public class Task<T> {
      *
      * @return The Awaited Task(Finished)
      */
+    @NotNull
     public Task<T> await() {
         switch (this.taskState) {
             case NotStarted:
@@ -73,8 +76,9 @@ public class Task<T> {
         throw new IllegalStateException();
     }
 
-    @NotNull
+    @Nullable
     public T getResult() {
+        this.await();
         return this.await().result;
     }
 
