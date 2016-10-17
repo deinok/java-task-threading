@@ -76,12 +76,18 @@ public class Task<T> {
         @NotNull
         private final Thread thread;
 
+        @Nullable
+        private OnSuccess<R> onSuccess;
+
         public Promise(@NotNull Callable<R> callable) {
             super(callable);
             this.thread = new Thread(this);
         }
 
-        public setOnSuccess()
+        public Promise<R> setOnSuccess(OnSuccess<R> onSuccess) {
+            this.onSuccess = onSuccess;
+            return this;
+        }
 
         @NotNull
         public Promise<R> executeAsync() {
@@ -136,8 +142,17 @@ public class Task<T> {
             throw new IllegalThreadStateException();
         }
 
-        protected void done() {
+        protected void done() throws RuntimeThreadException {
             super.done();
+            if (this.onSuccess != null) {
+                try {
+                    this.onSuccess.execute(get());
+                } catch (ExecutionException e) {
+                    throw new RuntimeThreadException(e.getCause());
+                } catch (InterruptedException e) {
+                    throw new RuntimeThreadException(e);
+                }
+            }
         }
 
     }
