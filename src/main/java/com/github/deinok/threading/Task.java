@@ -15,9 +15,6 @@ public class Task<T> {
     //region Variables
     @NotNull
     private final Promise<T> promise;
-
-    @Nullable
-    private OnSuccess<T> onSuccess;
     //endregion
 
     //region Constructors
@@ -65,8 +62,9 @@ public class Task<T> {
         }
     }
 
+    @NotNull
     public Task<T> onSuccess(@NotNull OnSuccess<T> onSuccess){
-        this.onSuccess=onSuccess;
+        this.promise.setOnSuccess(onSuccess);
         return this;
     }
 
@@ -84,7 +82,8 @@ public class Task<T> {
             this.thread = new Thread(this);
         }
 
-        public Promise<R> setOnSuccess(OnSuccess<R> onSuccess) {
+        @NotNull
+        public Promise<R> setOnSuccess(@NotNull OnSuccess<R> onSuccess) {
             this.onSuccess = onSuccess;
             return this;
         }
