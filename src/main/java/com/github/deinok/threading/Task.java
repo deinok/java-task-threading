@@ -9,6 +9,9 @@ import org.jetbrains.annotations.Nullable;
 public class Task<T> {
 
     //region Variables
+    @Nullable
+    private OnSuccess<T> onSuccess;
+
     @NotNull
     private final Thread thread;
 
@@ -74,6 +77,10 @@ public class Task<T> {
     public T getResult() {
         this.await();
         return this.await().result;
+    }
+
+    public void onSuccess(@NotNull OnSuccess<T> onSuccess){
+        this.onSuccess=onSuccess;
     }
 
 }
