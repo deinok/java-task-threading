@@ -3,31 +3,26 @@ package com.github.deinok.threading;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 /**
  * @param <T>
  */
 public class Task<T> {
 
+    @NotNull
+    private final Promise<T> promise;
     //region Variables
     @Nullable
     private OnSuccess<T> onSuccess;
-
-    @NotNull
-    private final Thread thread;
-
-    @Nullable
-    private T result;
     //endregion
 
     //region Constructors
 
-    public Task(@NotNull final TaskRunnable<T> function) {
-        this.thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                result = function.execute();
-            }
-        });
+    public Task(@NotNull final Callable<T> callable) {
+        this.promise = new Promise<>(callable);
     }
 
     //endregion
@@ -35,17 +30,13 @@ public class Task<T> {
     //region Executors
     @NotNull
     public Task<T> executeAsync() {
-        if (this.thread.getState() == Thread.State.NEW) {
-            this.thread.start();
-        }
+        this.promise.executeAsync();
         return this;
     }
 
     @NotNull
     public Task<T> executeSync() {
-        if (this.thread.getState() == Thread.State.NEW) {
-            this.thread.run();
-        }
+        this.promise.executeSync();
         return this;
     }
     //endregion
@@ -57,32 +48,94 @@ public class Task<T> {
      */
     @NotNull
     public Task<T> await() {
-        switch (this.thread.getState()) {
-            case NEW:
-                return this.executeAsync().await();
-            case RUNNABLE:
-                try {
-                    this.thread.join();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                return this.await();
-            case TERMINATED:
-                return this;
-        }
-        throw new IllegalThreadStateException();
+        this.promise.await();
+        return this;
     }
 
     @Nullable
     public T getResult() {
         this.await();
-        assert(this.thread.getState() == Thread.State.TERMINATED);
-        return this.result;
+        try {
+            return this.promise.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeThreadException(e);
+        }
     }
 
     public Task<T> onSuccess(@NotNull OnSuccess<T> onSuccess){
         this.onSuccess=onSuccess;
         return this;
     }
+
+
+    private class Promise<R> extends FutureTask<R> {
+
+        private final Thread thread;
+
+        public Promise(@NotNull Callable<R> callable) {
+            super(callable);
+            this.thread = new Thread(this);
+        }
+
+        @NotNull
+        public Promise<R> executeAsync() {
+            if (this.thread.getState() == Thread.State.NEW) {
+                this.thread.start();
+            }
+            return this;
+        }
+
+        @NotNull
+        public Promise<R> executeSync() {
+            if (this.thread.getState() == Thread.State.NEW) {
+                this.thread.run();
+            }
+            return this;
+        }
+
+        @NotNull
+        public Promise<R> await() {
+            switch (this.thread.getState()) {
+                case NEW:
+                    return this.executeAsync().await();
+
+                case RUNNABLE:
+                    try {
+                        this.thread.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return this.await();
+
+                case BLOCKED:
+                    try {
+                        this.thread.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return this.await();
+
+                case WAITING:
+                    try {
+                        this.thread.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return this.await();
+
+                case TERMINATED:
+                    return this;
+            }
+
+            throw new IllegalThreadStateException();
+        }
+
+        protected void done() {
+            super.done();
+        }
+
+    }
+
+
 
 }
