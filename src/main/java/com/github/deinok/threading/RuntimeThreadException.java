@@ -1,14 +1,14 @@
 package com.github.deinok.threading;
 
 
-import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 public class RuntimeThreadException extends RuntimeException {
 
     public RuntimeThreadException() {
     }
 
-    public RuntimeThreadException(@NonNls String message) {
+    public RuntimeThreadException(@NotNull String message) {
         super(message);
     }
 
@@ -20,7 +20,4 @@ public class RuntimeThreadException extends RuntimeException {
         super(cause);
     }
 
-    public RuntimeThreadException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

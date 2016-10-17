@@ -12,7 +12,6 @@ public class TaskExecuteSyncTests {
     public void executeSync1() throws InterruptedException {
         final long start = System.currentTimeMillis();
         final Task<Void> task = new Task<Void>(new Callable<Void>() {
-            @Override
             public Void call() throws InterruptedException {
                 Thread.sleep(250);
                 return null;
@@ -31,7 +30,6 @@ public class TaskExecuteSyncTests {
         final String currentThreadName = Thread.currentThread().getName();
 
         final Task<String> task = new Task<String>(new Callable<String>() {
-            @Override
             public String call() throws Exception {
                 return Thread.currentThread().getName();
             }
@@ -45,7 +43,6 @@ public class TaskExecuteSyncTests {
         final Long currentThreadId = Thread.currentThread().getId();
 
         final Task<Long> task = new Task<Long>(new Callable<Long>() {
-            @Override
             public Long call() throws Exception {
                 return Thread.currentThread().getId();
             }

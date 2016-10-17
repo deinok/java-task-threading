@@ -14,13 +14,11 @@ public class TaskOnSuccessTests {
         final long start = System.currentTimeMillis();
 
         final Task<Long> task = new Task<Long>(new Callable<Long>() {
-            @Override
             public Long call() throws Exception {
                 Thread.sleep(250);
                 return Thread.currentThread().getId();
             }
         }).executeAsync().onSuccess(new OnSuccess<Long>() {
-            @Override
             public void execute(@NotNull Long result) {
                 try {
                     Thread.sleep(250);
