@@ -12,9 +12,10 @@ import java.util.concurrent.FutureTask;
  */
 public class Task<T> {
 
+    //region Variables
     @NotNull
     private final Promise<T> promise;
-    //region Variables
+
     @Nullable
     private OnSuccess<T> onSuccess;
     //endregion
@@ -22,7 +23,7 @@ public class Task<T> {
     //region Constructors
 
     public Task(@NotNull final Callable<T> callable) {
-        this.promise = new Promise<>(callable);
+        this.promise = new Promise<T>(callable);
     }
 
     //endregion
@@ -53,11 +54,13 @@ public class Task<T> {
     }
 
     @Nullable
-    public T getResult() {
+    public T getResult() throws RuntimeThreadException {
         this.await();
         try {
             return this.promise.get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (ExecutionException e) {
+            throw new RuntimeThreadException(e.getCause());
+        } catch (InterruptedException e) {
             throw new RuntimeThreadException(e);
         }
     }
@@ -70,12 +73,15 @@ public class Task<T> {
 
     private class Promise<R> extends FutureTask<R> {
 
+        @NotNull
         private final Thread thread;
 
         public Promise(@NotNull Callable<R> callable) {
             super(callable);
             this.thread = new Thread(this);
         }
+
+        public setOnSuccess()
 
         @NotNull
         public Promise<R> executeAsync() {
