@@ -1,30 +1,26 @@
-package com.github.deinok.threding;
+package com.github.deinok.threading;
 
-
-import com.github.deinok.threading.Task;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
 
-public class TaskExecuteSync {
 
-    @Test
-    public void executeSync1() throws InterruptedException {
-        long start = System.currentTimeMillis();
-        Task<Void> task = new Task<Void>(new Callable<Void>() {
+public class TaskExecuteAsync {
+
+    @Test(timeout = 500)
+    public void executeAsync1() throws InterruptedException {
+        final Task<Void> task = new Task<Void>(new Callable<Void>() {
             @Override
             public Void call() throws InterruptedException {
                 Thread.sleep(250);
                 return null;
             }
-        }).executeSync();
+        }).executeAsync();
 
         Thread.sleep(250);
 
         task.await();
-        long end = System.currentTimeMillis();
-        Assert.assertTrue(String.valueOf(true), (end - start) > 500);
     }
 
     @Test
@@ -36,9 +32,9 @@ public class TaskExecuteSync {
             public String call() throws Exception {
                 return Thread.currentThread().getName();
             }
-        }).executeSync();
+        }).executeAsync();
 
-        Assert.assertEquals(currentThreadName, task.getResult());
+        Assert.assertNotEquals(currentThreadName, task.getResult());
     }
 
     @Test
@@ -50,8 +46,8 @@ public class TaskExecuteSync {
             public Long call() throws Exception {
                 return Thread.currentThread().getId();
             }
-        }).executeSync();
+        }).executeAsync();
 
-        Assert.assertEquals(currentThreadId, task.getResult());
+        Assert.assertNotEquals(currentThreadId, task.getResult());
     }
 }
