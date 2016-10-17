@@ -76,7 +76,8 @@ public class Task<T> {
     @Nullable
     public T getResult() {
         this.await();
-        return this.await().result;
+        assert(this.thread.getState() == Thread.State.TERMINATED);
+        return this.result;
     }
 
     public void onSuccess(@NotNull OnSuccess<T> onSuccess){
