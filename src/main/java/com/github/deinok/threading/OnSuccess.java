@@ -1,5 +1,7 @@
 package com.github.deinok.threading;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: rhc1
@@ -8,5 +10,5 @@ package com.github.deinok.threading;
  * To change this template use File | Settings | File Templates.
  */
 public interface OnSuccess<R> {
-    void execute(R result);
+    void execute(@Nullable R result);
 }
