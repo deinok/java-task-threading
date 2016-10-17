@@ -1,39 +1,56 @@
 package com.github.deinok.threding;
 
+import com.github.deinok.threading.OnSuccess;
 import com.github.deinok.threading.Task;
-import com.github.deinok.threading.TaskRunnable;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.concurrent.Callable;
 
 public class TaskTests {
 
     @Test(timeout = 500)
-    public void sleepTest(){
-        Task<Void> task = new Task<Void>(new TaskRunnable<Void>() {
+    public void sleepTest() throws InterruptedException {
+        Task<Void> task = new Task<Void>(new Callable<Void>() {
             @Override
-            public Void execute() {
+            public Void call() throws InterruptedException {
+                Thread.sleep(250);
+                return null;
+            }
+        }).executeAsync();
+
+        Thread.sleep(250);
+
+        task.await();
+    }
+
+    @Test
+    public void sleepOnSuccessTest() throws InterruptedException {
+        Task<Void> task = new Task<Void>(new Callable<Void>() {
+            @Override
+            public Void call() throws InterruptedException {
+                Thread.sleep(250);
+                return null;
+            }
+        }).executeAsync().onSuccess(new OnSuccess<Void>() {
+            @Override
+            public void execute(Void result) {
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                return null;
-                }
-        }).executeAsync();
+            }
+        });
 
-        try {
-            Thread.sleep(250);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         task.await();
     }
 
     @Test
     public void resultIntegerTest(){
-        Task<Integer> task = new Task<Integer>(new TaskRunnable<Integer>() {
+        Task<Integer> task = new Task<Integer>(new Callable<Integer>() {
             @Override
-            public Integer execute() {
+            public Integer call() {
                 return 1;
             }
         }).executeAsync();
