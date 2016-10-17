@@ -53,9 +53,10 @@ public class Task<T> {
 
     /**
      * Ensures that the result is ready to be returned
+     *
      * @return The Awaited Task(Finished)
      */
-    public Task<T> await(){
+    public Task<T> await() {
         switch (this.taskState) {
             case NotStarted:
                 return this.executeAsync().await();
@@ -73,7 +74,7 @@ public class Task<T> {
     }
 
     @NotNull
-    public T getResult(){
+    public T getResult() {
         return this.await().result;
     }
 
