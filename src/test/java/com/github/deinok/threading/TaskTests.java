@@ -1,7 +1,5 @@
-package com.github.deinok.threding;
+package com.github.deinok.threading;
 
-import com.github.deinok.threading.OnSuccess;
-import com.github.deinok.threading.Task;
 import org.junit.Assert;
 import org.junit.Test;
 
