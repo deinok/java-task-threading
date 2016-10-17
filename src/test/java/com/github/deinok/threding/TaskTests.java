@@ -1,5 +1,6 @@
 package com.github.deinok.threding;
 
+import com.github.deinok.threading.OnSuccess;
 import com.github.deinok.threading.Task;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +20,28 @@ public class TaskTests {
         }).executeAsync();
 
         Thread.sleep(250);
+
+        task.await();
+    }
+
+    @Test
+    public void sleepOnSuccessTest() throws InterruptedException {
+        Task<Void> task = new Task<Void>(new Callable<Void>() {
+            @Override
+            public Void call() throws InterruptedException {
+                Thread.sleep(250);
+                return null;
+            }
+        }).executeAsync().onSuccess(new OnSuccess<Void>() {
+            @Override
+            public void execute(Void result) {
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         task.await();
     }

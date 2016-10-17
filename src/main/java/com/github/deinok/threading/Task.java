@@ -134,6 +134,14 @@ public class Task<T> {
                     }
                     return this.await();
 
+                case TIMED_WAITING:
+                    try {
+                        this.thread.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return this.await();
+
                 case TERMINATED:
                     return this;
             }
