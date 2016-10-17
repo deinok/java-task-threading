@@ -111,35 +111,19 @@ public class Task<T> {
                     return this.executeAsync().await();
 
                 case RUNNABLE:
-                    try {
-                        this.thread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    this.join();
                     return this.await();
 
                 case BLOCKED:
-                    try {
-                        this.thread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    this.join();
                     return this.await();
 
                 case WAITING:
-                    try {
-                        this.thread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    this.join();
                     return this.await();
 
                 case TIMED_WAITING:
-                    try {
-                        this.thread.join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    this.join();
                     return this.await();
 
                 case TERMINATED:
@@ -159,6 +143,14 @@ public class Task<T> {
                 } catch (InterruptedException e) {
                     throw new RuntimeThreadException(e);
                 }
+            }
+        }
+
+        private void join() {
+            try {
+                this.thread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
 
