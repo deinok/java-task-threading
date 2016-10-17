@@ -26,4 +26,32 @@ public class TaskExecuteSync {
         long end = System.currentTimeMillis();
         Assert.assertTrue(String.valueOf(true), (end - start) > 500);
     }
+
+    @Test
+    public void executeSync2() {
+        final String currentThreadName = Thread.currentThread().getName();
+
+        final Task<String> task = new Task<String>(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return Thread.currentThread().getName();
+            }
+        }).executeSync();
+
+        Assert.assertEquals(currentThreadName, task.getResult());
+    }
+
+    @Test
+    public void executeSync3() {
+        final Long currentThreadId = Thread.currentThread().getId();
+
+        final Task<Long> task = new Task<Long>(new Callable<Long>() {
+            @Override
+            public Long call() throws Exception {
+                return Thread.currentThread().getId();
+            }
+        }).executeSync();
+
+        Assert.assertEquals(currentThreadId, task.getResult());
+    }
 }
