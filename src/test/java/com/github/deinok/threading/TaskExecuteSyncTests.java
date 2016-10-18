@@ -1,10 +1,10 @@
 package com.github.deinok.threading;
 
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
+
 
 public class TaskExecuteSyncTests {
 
@@ -22,7 +22,7 @@ public class TaskExecuteSyncTests {
 
         task.await();
         final long end = System.currentTimeMillis();
-        Assert.assertTrue(String.valueOf(true), (end - start) > 500);
+        Assert.assertTrue(String.valueOf(true), (end - start) >= 500);
     }
 
     @Test

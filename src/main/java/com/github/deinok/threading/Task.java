@@ -25,6 +25,12 @@ public class Task<T> {
 
     //endregion
 
+    @NotNull
+    public Task<T> setPriority(int newPriority) {
+        this.promise.setPriority(newPriority);
+        return this;
+    }
+
     //region Executors
     @NotNull
     public Task<T> executeAsync() {
@@ -100,6 +106,14 @@ public class Task<T> {
         public Promise<R> executeSync() {
             if (this.thread.getState() == Thread.State.NEW) {
                 this.thread.run();
+            }
+            return this;
+        }
+
+        @NotNull
+        public Promise<R> setPriority(int newPriority) {
+            if (this.thread.getState() == Thread.State.NEW) {
+                this.thread.setPriority(newPriority);
             }
             return this;
         }
