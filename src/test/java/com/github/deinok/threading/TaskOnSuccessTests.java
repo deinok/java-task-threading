@@ -1,7 +1,7 @@
 package com.github.deinok.threading;
 
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class TaskOnSuccessTests {
                 return threadIds[0];
             }
         }).executeAsync().onSuccess(new OnSuccess<Long>() {
-            public void execute(@NotNull Long result) {
+            public void execute(@Nullable Long result) {
                 threadIds[1] = Thread.currentThread().getId();
                 try {
                     Thread.sleep(250);
