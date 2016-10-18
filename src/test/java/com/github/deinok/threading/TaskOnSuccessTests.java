@@ -11,29 +11,38 @@ public class TaskOnSuccessTests {
 
     @Test
     public void onSuccessTest1() {
+
+        final Long[] threadIds = new Long[3];
+
         final long start = System.currentTimeMillis();
 
         final Task<Long> task = new Task<Long>(new Callable<Long>() {
             public Long call() throws Exception {
+                threadIds[0] = Thread.currentThread().getId();
                 Thread.sleep(250);
-                return Thread.currentThread().getId();
+                return threadIds[0];
             }
         }).executeAsync().onSuccess(new OnSuccess<Long>() {
             public void execute(@NotNull Long result) {
+                threadIds[1] = Thread.currentThread().getId();
                 try {
                     Thread.sleep(250);
-                    final long mainThreadId = Thread.currentThread().getId();
-                    Assert.assertEquals(mainThreadId, (long) result);
+                    Assert.assertNotEquals(Thread.currentThread().getId(), (long) result);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
+        threadIds[2] = Thread.currentThread().getId();
 
         task.await();
 
         final long end = System.currentTimeMillis();
-
         Assert.assertTrue(String.valueOf(true), ((end - start) > 500));
+
+        Assert.assertNotEquals(threadIds[0], threadIds[1]);
+        Assert.assertNotEquals(threadIds[0], threadIds[2]);
+        Assert.assertEquals(threadIds[1], threadIds[2]);
+
     }
 }
