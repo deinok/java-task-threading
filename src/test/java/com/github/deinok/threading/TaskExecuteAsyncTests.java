@@ -23,7 +23,7 @@ public class TaskExecuteAsyncTests {
     }
 
     @Test
-    public void executeSync2() {
+    public void executeAsync2() {
         final String currentThreadName = Thread.currentThread().getName();
 
         final Task<String> task = new Task<String>(new Callable<String>() {
@@ -36,7 +36,7 @@ public class TaskExecuteAsyncTests {
     }
 
     @Test
-    public void executeSync3() {
+    public void executeAsync3() {
         final Long currentThreadId = Thread.currentThread().getId();
 
         final Task<Long> task = new Task<Long>(new Callable<Long>() {
