@@ -15,11 +15,35 @@ public class TaskPriorityTest {
             public Void call() throws Exception {
                 return null;
             }
-        }).setPriority(priority);
+        });
+
+        task.setPriority(priority);
         Assert.assertEquals(task.getPriority(), priority);
+
         task.executeAsync();
         Assert.assertEquals(task.getPriority(), priority);
+
         task.await();
         Assert.assertEquals(task.getPriority(), priority);
+    }
+
+    @Test
+    public void taskPriorityTest2() {
+        final Task<Void> task = new Task<Void>(new Callable<Void>() {
+            public Void call() throws Exception {
+                return null;
+            }
+        });
+
+        task.setPriority(1);
+        Assert.assertEquals(task.getPriority(), 1);
+
+        task.setPriority(2);
+        task.executeAsync();
+        Assert.assertEquals(task.getPriority(), 2);
+
+        task.setPriority(3);
+        task.await();
+        Assert.assertEquals(task.getPriority(), 2);
     }
 }
