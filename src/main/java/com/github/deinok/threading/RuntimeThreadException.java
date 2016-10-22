@@ -1,7 +1,7 @@
 package com.github.deinok.threading;
 
-
 import org.jetbrains.annotations.NotNull;
+
 
 public class RuntimeThreadException extends RuntimeException {
 
