@@ -25,6 +25,10 @@ public class Task<T> {
 
     //endregion
 
+    public int getPriority() {
+        return this.promise.getPriority();
+    }
+
     @NotNull
     public Task<T> setPriority(int newPriority) {
         this.promise.setPriority(newPriority);
@@ -74,7 +78,6 @@ public class Task<T> {
         return this;
     }
 
-
     private class Promise<R> extends FutureTask<R> {
 
         @NotNull
@@ -108,6 +111,10 @@ public class Task<T> {
                 this.thread.run();
             }
             return this;
+        }
+
+        public int getPriority() {
+            return this.thread.getPriority();
         }
 
         @NotNull
