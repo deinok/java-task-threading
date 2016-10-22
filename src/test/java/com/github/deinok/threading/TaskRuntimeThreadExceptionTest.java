@@ -25,4 +25,5 @@ public class TaskRuntimeThreadExceptionTest {
             Assert.assertTrue(e.getCause() instanceof RuntimeException);
         }
     }
+
 }
