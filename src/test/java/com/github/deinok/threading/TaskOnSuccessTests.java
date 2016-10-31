@@ -29,8 +29,12 @@ public class TaskOnSuccessTests {
             }
         });
 
-        task.await();
+        task.getResult();
+        final long middle = System.currentTimeMillis();
+        Assert.assertTrue(String.valueOf(true), ((middle - start) < 500));
 
+
+        task.await();
         final long end = System.currentTimeMillis();
         Assert.assertTrue(String.valueOf(true), ((end - start) >= 500));
 

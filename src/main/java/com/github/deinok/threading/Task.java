@@ -62,7 +62,6 @@ public class Task<T> {
 
     @Nullable
     public T getResult() throws RuntimeThreadException {
-        this.await();
         try {
             return this.promise.get();
         } catch (ExecutionException e) {
