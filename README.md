@@ -1,4 +1,4 @@
-# Java Threading:
+# Java Task Threading:
 
 ## Build:
-[![CircleCI](https://circleci.com/gh/deinok/java-threading.svg?style=svg)](https://circleci.com/gh/deinok/java-threading)
+[![CircleCI](https://circleci.com/gh/deinok/java-task-threading.svg?style=svg)](https://circleci.com/gh/deinok/java-task-threading)
