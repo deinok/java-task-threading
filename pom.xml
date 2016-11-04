@@ -6,7 +6,7 @@
 
     <groupId>com.github.deinok</groupId>
     <artifactId>java-task-threading</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
 
@@ -37,6 +37,14 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+
+
+    <scm>
+        <url>${project.url}</url>
+        <connection>scm:git:${project.url}.git</connection>
+        <developerConnection>scm:git:${project.url}.git</developerConnection>
+        <tag>beta</tag>
+    </scm>
 
 
     <build>
