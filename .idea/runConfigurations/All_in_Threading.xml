@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All in Threading" type="JUnit" factoryName="JUnit" singleton="true" nameIsGenerated="true" repeat_count="50">
+  <configuration default="false" name="All in Threading" type="JUnit" factoryName="JUnit" singleton="true" repeat_count="50">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" track_test_folders="true" runner="idea" />
     <module name="Threading" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
