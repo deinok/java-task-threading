@@ -8,19 +8,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
- * @param <T>
+ * @param <R>
  */
-public class Task<T> {
+public class Task<R> {
 
     //region Variables
     @NotNull
-    private final Promise<T> promise;
+    private final Promise<R> promise;
     //endregion
 
     //region Constructors
 
-    public Task(@NotNull final Callable<T> callable) {
-        this.promise = new Promise<T>(callable);
+    public Task(@NotNull final Callable<R> callable) {
+        this.promise = new Promise<R>(callable);
     }
 
     //endregion
@@ -30,24 +30,28 @@ public class Task<T> {
     }
 
     @NotNull
-    public Task<T> setPriority(int newPriority) {
+    public Task<R> setPriority(int newPriority) {
         this.promise.setPriority(newPriority);
         return this;
     }
 
     //region Executors
     @NotNull
-    public Task<T> executeAsync() {
+    public Task<R> executeAsync() {
         this.promise.executeAsync();
         return this;
     }
 
     @NotNull
-    public Task<T> executeSync() {
+    public Task<R> executeSync() {
         this.promise.executeSync();
         return this;
     }
     //endregion
+
+    public boolean cancel() {
+        return this.promise.cancel(true);
+    }
 
     /**
      * Ensures that the result is ready to be returned
@@ -55,13 +59,13 @@ public class Task<T> {
      * @return The Awaited Task(Finished)
      */
     @NotNull
-    public Task<T> await() {
+    public Task<R> await() {
         this.promise.await();
         return this;
     }
 
     @Nullable
-    public T getResult() throws RuntimeThreadException {
+    public R getResult() throws RuntimeThreadException {
         try {
             return this.promise.executeAsync().get();
         } catch (ExecutionException e) {
@@ -72,7 +76,7 @@ public class Task<T> {
     }
 
     @NotNull
-    public Task<T> onSuccess(@NotNull OnSuccess<T> onSuccess){
+    public Task<R> onSuccess(@NotNull OnSuccess<R> onSuccess) {
         this.promise.setOnSuccess(onSuccess);
         return this;
     }

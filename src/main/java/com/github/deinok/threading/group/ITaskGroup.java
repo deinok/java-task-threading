@@ -18,6 +18,8 @@ public interface ITaskGroup<R> {
     @NotNull
     ITaskGroup<R> setPriority(int priority);
 
+    boolean cancel();
+
     @NotNull
     ITaskGroup<R> await();
 

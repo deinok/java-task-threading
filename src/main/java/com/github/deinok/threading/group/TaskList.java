@@ -43,6 +43,16 @@ public class TaskList<R> extends LinkedList<Task<R>> implements ITaskGroup<R> {
         return this;
     }
 
+    public boolean cancel() {
+        for (Task<R> task : this) {
+            boolean cancelled = task.cancel();
+            if (!cancelled) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @NotNull
     public ITaskGroup<R> await() {
         for (Task<R> task : this) {
