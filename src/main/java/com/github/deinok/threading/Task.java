@@ -63,7 +63,7 @@ public class Task<T> {
     @Nullable
     public T getResult() throws RuntimeThreadException {
         try {
-            return this.promise.get();
+            return this.promise.executeAsync().get();
         } catch (ExecutionException e) {
             throw new RuntimeThreadException(e.getCause());
         } catch (InterruptedException e) {
