@@ -1,6 +1,7 @@
 package com.github.deinok.threading;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class RuntimeThreadException extends RuntimeException {
@@ -12,11 +13,11 @@ public class RuntimeThreadException extends RuntimeException {
         super(message);
     }
 
-    public RuntimeThreadException(String message, Throwable cause) {
+    public RuntimeThreadException(@NotNull String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
-    public RuntimeThreadException(Throwable cause) {
+    public RuntimeThreadException(@Nullable Throwable cause) {
         super(cause);
     }
 

@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.util.concurrent.Callable;
 
-/**
- * Created by raulh on 04/11/2016.
- */
+
 public class TaskGetResultAsyncTests {
 
     @Test(timeout = 500)
