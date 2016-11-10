@@ -81,27 +81,27 @@ public class Task<R> {
         return this;
     }
 
-    private class Promise<R> extends FutureTask<R> {
+    private class Promise<P> extends FutureTask<P> {
 
         @NotNull
         private final Thread thread;
 
         @Nullable
-        private OnSuccess<R> onSuccess;
+        private OnSuccess<P> onSuccess;
 
-        public Promise(@NotNull Callable<R> callable) {
+        public Promise(@NotNull Callable<P> callable) {
             super(callable);
             this.thread = new Thread(this);
         }
 
         @NotNull
-        public Promise<R> setOnSuccess(@NotNull OnSuccess<R> onSuccess) {
+        public Promise<P> setOnSuccess(@NotNull OnSuccess<P> onSuccess) {
             this.onSuccess = onSuccess;
             return this;
         }
 
         @NotNull
-        public Promise<R> executeAsync() {
+        public Promise<P> executeAsync() {
             if (this.thread.getState() == Thread.State.NEW) {
                 this.thread.start();
             }
@@ -109,7 +109,7 @@ public class Task<R> {
         }
 
         @NotNull
-        public Promise<R> executeSync() {
+        public Promise<P> executeSync() {
             if (this.thread.getState() == Thread.State.NEW) {
                 this.thread.run();
             }
@@ -121,7 +121,7 @@ public class Task<R> {
         }
 
         @NotNull
-        public Promise<R> setPriority(int newPriority) {
+        public Promise<P> setPriority(int newPriority) {
             if (this.thread.getState() == Thread.State.NEW) {
                 this.thread.setPriority(newPriority);
             }
@@ -129,7 +129,7 @@ public class Task<R> {
         }
 
         @NotNull
-        public Promise<R> await() {
+        public Promise<P> await() {
             switch (this.thread.getState()) {
                 case NEW:
                     return this.executeAsync().await();
