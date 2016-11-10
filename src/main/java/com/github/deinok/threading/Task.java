@@ -8,7 +8,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
- * @param <R>
+ * A Task in parallel
+ *
+ * @param <R> The Result Type
  */
 public class Task<R> {
 
@@ -19,29 +21,56 @@ public class Task<R> {
 
     //region Constructors
 
+    /**
+     * Creates a new Task
+     *
+     * @param callable The callable function
+     */
     public Task(@NotNull final Callable<R> callable) {
         this.promise = new Promise<R>(callable);
     }
 
     //endregion
 
+    /**
+     * Gets the priority of the Task
+     *
+     * @return The Priority
+     */
     public int getPriority() {
         return this.promise.getPriority();
     }
 
+    /**
+     * Sets the priority
+     *
+     * @param priority The new Priority
+     * @return The Task
+     */
     @NotNull
-    public Task<R> setPriority(int newPriority) {
-        this.promise.setPriority(newPriority);
+    public Task<R> setPriority(int priority) {
+        this.promise.setPriority(priority);
         return this;
     }
 
     //region Executors
+
+    /**
+     * Executes the Task Asynchronous
+     *
+     * @return The Task
+     */
     @NotNull
     public Task<R> executeAsync() {
         this.promise.executeAsync();
         return this;
     }
 
+    /**
+     * Executes the Task Synchronous
+     *
+     * @return The Task
+     */
     @NotNull
     public Task<R> executeSync() {
         this.promise.executeSync();
@@ -49,6 +78,11 @@ public class Task<R> {
     }
     //endregion
 
+    /**
+     * Cancel the Task
+     *
+     * @return Returns if it is canceled
+     */
     public boolean cancel() {
         return this.promise.cancel(true);
     }
@@ -59,11 +93,17 @@ public class Task<R> {
      * @return The Awaited Task(Finished)
      */
     @NotNull
-    public Task<R> await() {
+    public Task<R> await() throws RuntimeThreadException {
         this.promise.await();
         return this;
     }
 
+    /**
+     * Gets the result of the Task
+     *
+     * @return The Result
+     * @throws RuntimeThreadException The probable Exception throw by the Thread
+     */
     @Nullable
     public R getResult() throws RuntimeThreadException {
         try {
@@ -75,6 +115,12 @@ public class Task<R> {
         }
     }
 
+    /**
+     * Callback executed when the Task result is ready
+     *
+     * @param onSuccess The Callback Interface
+     * @return The Task
+     */
     @NotNull
     public Task<R> onSuccess(@NotNull OnSuccess<R> onSuccess) {
         this.promise.setOnSuccess(onSuccess);
@@ -129,7 +175,7 @@ public class Task<R> {
         }
 
         @NotNull
-        public Promise<P> await() {
+        public Promise<P> await() throws RuntimeThreadException{
             switch (this.thread.getState()) {
                 case NEW:
                     return this.executeAsync().await();
@@ -170,11 +216,11 @@ public class Task<R> {
             }
         }
 
-        private void join() {
+        private void join() throws RuntimeThreadException {
             try {
                 this.thread.join();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeThreadException(e);
             }
         }
 
