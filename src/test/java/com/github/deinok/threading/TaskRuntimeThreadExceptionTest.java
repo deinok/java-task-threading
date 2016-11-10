@@ -10,9 +10,11 @@ public class TaskRuntimeThreadExceptionTest {
 
     @Test
     public void taskRuntimeThreadExceptionTest1() {
+        final String testExceptionString = "TestingException";
+
         final Task<Void> task = new Task<Void>(new Callable<Void>() {
             public Void call() throws Exception {
-                throw new RuntimeException("TestingException");
+                throw new RuntimeException(testExceptionString);
             }
         });
 
@@ -23,6 +25,7 @@ public class TaskRuntimeThreadExceptionTest {
             Assert.fail();
         } catch (RuntimeThreadException e) {
             Assert.assertTrue(e.getCause() instanceof RuntimeException);
+            Assert.assertEquals(e.getCause().getMessage(), testExceptionString);
         }
     }
 
