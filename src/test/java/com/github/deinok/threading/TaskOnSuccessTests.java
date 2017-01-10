@@ -14,13 +14,14 @@ public class TaskOnSuccessTests {
 
 		final long start = System.currentTimeMillis();
 
-		final Task<Void> task = new Task<Void>(new Callable<Void>() {
-			public Void call() throws Exception {
+		final Task<Integer> task = new Task<Integer>(new Callable<Integer>() {
+			public Integer call() throws Exception {
 				Thread.sleep(250);
-				return null;
+				return 1;
 			}
-		}).onSuccess(new OnSuccess<Void>() {
-			public void execute(@Nullable Void result) {
+		}).onSuccess(new OnSuccess<Integer>() {
+			public void execute(@Nullable Integer result) {
+				Assert.assertEquals(1, result.intValue());
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
@@ -29,7 +30,8 @@ public class TaskOnSuccessTests {
 			}
 		}).executeAsync();
 
-		task.getResult();
+		Assert.assertEquals(1, task.getResult().intValue());
+
 		final long middle = System.currentTimeMillis();
 		Assert.assertTrue(String.valueOf(true), ((middle - start) < 500));
 
