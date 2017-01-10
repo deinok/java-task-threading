@@ -16,7 +16,7 @@ public class Task<R> {
 
 	//region Variables
 	@NotNull
-	private final Promise<R> promise;
+	private final InnerFutureTask<R> innerFutureTask;
 	//endregion
 
 	//region Constructors
@@ -27,7 +27,7 @@ public class Task<R> {
 	 * @param callable The callable function
 	 */
 	public Task(@NotNull final Callable<R> callable) {
-		this.promise = new Promise<R>(callable);
+		this.innerFutureTask = new InnerFutureTask<R>(callable);
 	}
 
 	//endregion
@@ -38,7 +38,7 @@ public class Task<R> {
 	 * @return The Priority
 	 */
 	public int getPriority() {
-		return this.promise.getPriority();
+		return this.innerFutureTask.getPriority();
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public Task<R> setPriority(int priority) {
-		this.promise.setPriority(priority);
+		this.innerFutureTask.setPriority(priority);
 		return this;
 	}
 
@@ -62,7 +62,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public Task<R> executeAsync() {
-		this.promise.executeAsync();
+		this.innerFutureTask.executeAsync();
 		return this;
 	}
 
@@ -73,7 +73,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public Task<R> executeSync() {
-		this.promise.executeSync();
+		this.innerFutureTask.executeSync();
 		return this;
 	}
 	//endregion
@@ -84,7 +84,7 @@ public class Task<R> {
 	 * @return Returns if it is canceled
 	 */
 	public boolean cancel() {
-		return this.promise.cancel(true);
+		return this.innerFutureTask.cancel(true);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public Task<R> await() throws RuntimeThreadException {
-		this.promise.await();
+		this.innerFutureTask.await();
 		return this;
 	}
 
@@ -107,7 +107,7 @@ public class Task<R> {
 	@Nullable
 	public R getResult() throws RuntimeThreadException {
 		try {
-			return this.promise.executeAsync().get();
+			return this.innerFutureTask.executeAsync().get();
 		} catch (ExecutionException e) {
 			throw new RuntimeThreadException(e.getCause());
 		} catch (InterruptedException e) {
@@ -123,11 +123,11 @@ public class Task<R> {
 	 */
 	@NotNull
 	public Task<R> onSuccess(@NotNull OnSuccess<R> onSuccess) {
-		this.promise.setOnSuccess(onSuccess);
+		this.innerFutureTask.setOnSuccess(onSuccess);
 		return this;
 	}
 
-	private class Promise<P> extends FutureTask<P> {
+	private class InnerFutureTask<P> extends FutureTask<P> {
 
 		@NotNull
 		private final Thread thread;
@@ -135,19 +135,19 @@ public class Task<R> {
 		@Nullable
 		private OnSuccess<P> onSuccess;
 
-		public Promise(@NotNull Callable<P> callable) {
+		public InnerFutureTask(@NotNull Callable<P> callable) {
 			super(callable);
 			this.thread = new Thread(this);
 		}
 
 		@NotNull
-		public Promise<P> setOnSuccess(@NotNull OnSuccess<P> onSuccess) {
+		public InnerFutureTask<P> setOnSuccess(@NotNull OnSuccess<P> onSuccess) {
 			this.onSuccess = onSuccess;
 			return this;
 		}
 
 		@NotNull
-		public Promise<P> executeAsync() {
+		public InnerFutureTask<P> executeAsync() {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.start();
 			}
@@ -155,7 +155,7 @@ public class Task<R> {
 		}
 
 		@NotNull
-		public Promise<P> executeSync() {
+		public InnerFutureTask<P> executeSync() {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.run();
 			}
@@ -167,7 +167,7 @@ public class Task<R> {
 		}
 
 		@NotNull
-		public Promise<P> setPriority(int newPriority) {
+		public InnerFutureTask<P> setPriority(int newPriority) {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.setPriority(newPriority);
 			}
@@ -175,7 +175,7 @@ public class Task<R> {
 		}
 
 		@NotNull
-		public Promise<P> await() throws RuntimeThreadException {
+		public InnerFutureTask<P> await() throws RuntimeThreadException {
 			switch (this.thread.getState()) {
 				case NEW:
 					return this.executeAsync().await();
