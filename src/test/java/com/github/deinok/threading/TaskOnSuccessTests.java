@@ -15,7 +15,7 @@ public class TaskOnSuccessTests {
 		final long start = System.currentTimeMillis();
 
 		final Task<Integer> task = new Task<Integer>(new Callable<Integer>() {
-			public Integer call() throws Exception {
+			public Integer call() throws InterruptedException {
 				Thread.sleep(250);
 				return 1;
 			}
