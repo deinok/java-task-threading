@@ -8,25 +8,25 @@ import java.util.concurrent.Callable;
 
 public class TaskRuntimeThreadExceptionTest {
 
-    @Test
-    public void taskRuntimeThreadExceptionTest1() {
-        final String testExceptionString = "TestingException";
+	@Test
+	public void taskRuntimeThreadExceptionTest1() {
+		final String testExceptionString = "TestingException";
 
-        final Task<Void> task = new Task<Void>(new Callable<Void>() {
-            public Void call() throws Exception {
-                throw new RuntimeException(testExceptionString);
-            }
-        });
+		final Task<Void> task = new Task<Void>(new Callable<Void>() {
+			public Void call() throws Exception {
+				throw new RuntimeException(testExceptionString);
+			}
+		});
 
-        task.executeAsync();
+		task.executeAsync();
 
-        try {
-            task.getResult();
-            Assert.fail();
-        } catch (RuntimeThreadException e) {
-            Assert.assertTrue(e.getCause() instanceof RuntimeException);
-            Assert.assertEquals(e.getCause().getMessage(), testExceptionString);
-        }
-    }
+		try {
+			task.getResult();
+			Assert.fail();
+		} catch (RuntimeThreadException e) {
+			Assert.assertTrue(e.getCause() instanceof RuntimeException);
+			Assert.assertEquals(e.getCause().getMessage(), testExceptionString);
+		}
+	}
 
 }

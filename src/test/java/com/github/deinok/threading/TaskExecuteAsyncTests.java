@@ -8,43 +8,43 @@ import java.util.concurrent.Callable;
 
 public class TaskExecuteAsyncTests {
 
-    @Test(timeout = 500)
-    public void executeAsync1() throws InterruptedException {
-        final Task<Void> task = new Task<Void>(new Callable<Void>() {
-            public Void call() throws InterruptedException {
-                Thread.sleep(250);
-                return null;
-            }
-        }).executeAsync();
+	@Test(timeout = 500)
+	public void executeAsync1() throws InterruptedException {
+		final Task<Void> task = new Task<Void>(new Callable<Void>() {
+			public Void call() throws InterruptedException {
+				Thread.sleep(250);
+				return null;
+			}
+		}).executeAsync();
 
-        Thread.sleep(250);
+		Thread.sleep(250);
 
-        task.await();
-    }
+		task.await();
+	}
 
-    @Test
-    public void executeAsync2() {
-        final String currentThreadName = Thread.currentThread().getName();
+	@Test
+	public void executeAsync2() {
+		final String currentThreadName = Thread.currentThread().getName();
 
-        final Task<String> task = new Task<String>(new Callable<String>() {
-            public String call() throws Exception {
-                return Thread.currentThread().getName();
-            }
-        }).executeAsync();
+		final Task<String> task = new Task<String>(new Callable<String>() {
+			public String call() throws Exception {
+				return Thread.currentThread().getName();
+			}
+		}).executeAsync();
 
-        Assert.assertNotEquals(currentThreadName, task.getResult());
-    }
+		Assert.assertNotEquals(currentThreadName, task.getResult());
+	}
 
-    @Test
-    public void executeAsync3() {
-        final Long currentThreadId = Thread.currentThread().getId();
+	@Test
+	public void executeAsync3() {
+		final Long currentThreadId = Thread.currentThread().getId();
 
-        final Task<Long> task = new Task<Long>(new Callable<Long>() {
-            public Long call() throws Exception {
-                return Thread.currentThread().getId();
-            }
-        }).executeAsync();
+		final Task<Long> task = new Task<Long>(new Callable<Long>() {
+			public Long call() throws Exception {
+				return Thread.currentThread().getId();
+			}
+		}).executeAsync();
 
-        Assert.assertNotEquals(currentThreadId, task.getResult());
-    }
+		Assert.assertNotEquals(currentThreadId, task.getResult());
+	}
 }

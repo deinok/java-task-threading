@@ -8,26 +8,26 @@ import java.util.List;
 
 public interface ITaskGroup<R> {
 
-    @NotNull
-    ITaskGroup<R> executeAsync();
+	@NotNull
+	ITaskGroup<R> executeAsync();
 
-    @NotNull
-    ITaskGroup<R> executeSync();
+	@NotNull
+	ITaskGroup<R> executeSync();
 
-    int getPriority();
+	int getPriority();
 
-    @NotNull
-    ITaskGroup<R> setPriority(int priority);
+	@NotNull
+	ITaskGroup<R> setPriority(int priority);
 
-    boolean cancel();
+	boolean cancel();
 
-    @NotNull
-    ITaskGroup<R> await();
+	@NotNull
+	ITaskGroup<R> await();
 
-    @NotNull
-    List<R> getResult();
+	@NotNull
+	List<R> getResult();
 
-    @NotNull
-    ITaskGroup<R> onSuccess(@NotNull OnSuccess<R> onSuccess);
+	@NotNull
+	ITaskGroup<R> onSuccess(@NotNull OnSuccess<R> onSuccess);
 
 }

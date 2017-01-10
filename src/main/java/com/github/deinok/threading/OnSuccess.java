@@ -4,5 +4,5 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface OnSuccess<R> {
-    void execute(@Nullable R result);
+	void execute(@Nullable R result);
 }
