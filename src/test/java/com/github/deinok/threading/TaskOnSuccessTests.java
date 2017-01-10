@@ -19,7 +19,7 @@ public class TaskOnSuccessTests {
 				Thread.sleep(250);
 				return null;
 			}
-		}).executeAsync().onSuccess(new OnSuccess<Void>() {
+		}).onSuccess(new OnSuccess<Void>() {
 			public void execute(@Nullable Void result) {
 				try {
 					Thread.sleep(250);
@@ -27,7 +27,7 @@ public class TaskOnSuccessTests {
 					throw new RuntimeException(e);
 				}
 			}
-		});
+		}).executeAsync();
 
 		task.getResult();
 		final long middle = System.currentTimeMillis();

@@ -228,22 +228,21 @@ public class Task<R> implements Promise<R> {
 			super.done();
 
 			P result = null;
-			RuntimeThreadException runtimeThreadException = null;
+
 			try {
 				result = this.get();
 			} catch (InterruptedException e) {
-				runtimeThreadException = new RuntimeThreadException(e.getCause());
+				this.executeOnException(new RuntimeThreadException(e.getCause()));
 			} catch (ExecutionException e) {
-				runtimeThreadException = new RuntimeThreadException(e.getCause());
+				this.executeOnException(new RuntimeThreadException(e.getCause()));
 			}
 
-			if (runtimeThreadException != null) {
-				if (this.onException != null) this.onException.execute(runtimeThreadException);
-				else throw runtimeThreadException;
-			}
-
-			if (this.onSuccess != null) {
-				this.onSuccess.execute(result);
+			try {
+				if (this.onSuccess != null) {
+					this.onSuccess.execute(result);
+				}
+			} catch (Exception e) {
+				this.executeOnException(new RuntimeThreadException(e));
 			}
 
 		}
@@ -253,6 +252,13 @@ public class Task<R> implements Promise<R> {
 				this.thread.join();
 			} catch (InterruptedException e) {
 				throw new RuntimeThreadException(e);
+			}
+		}
+
+		private void executeOnException(@Nullable RuntimeThreadException runtimeThreadException) {
+			if (runtimeThreadException != null) {
+				if (this.onException != null) this.onException.execute(runtimeThreadException);
+				else throw runtimeThreadException;
 			}
 		}
 
