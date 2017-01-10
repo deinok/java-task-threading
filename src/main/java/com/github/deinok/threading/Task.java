@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
  *
  * @param <R> The Result Type
  */
-public class Task<R> {
+public class Task<R> implements Promise<R> {
 
 	//region Variables
 	@NotNull
@@ -122,8 +122,20 @@ public class Task<R> {
 	 * @return The Task
 	 */
 	@NotNull
-	public Task<R> onSuccess(@NotNull OnSuccess<R> onSuccess) {
+	public Task<R> onSuccess(@Nullable OnSuccess<R> onSuccess) {
 		this.innerFutureTask.setOnSuccess(onSuccess);
+		return this;
+	}
+
+	/**
+	 * Callback executed when the Task ends with an exception
+	 *
+	 * @param onException The Callback Interface
+	 * @return The Task
+	 */
+	@NotNull
+	public Task<R> onException(@Nullable OnException onException) {
+		this.innerFutureTask.setOnException(onException);
 		return this;
 	}
 
@@ -135,14 +147,23 @@ public class Task<R> {
 		@Nullable
 		private OnSuccess<P> onSuccess;
 
+		@Nullable
+		private OnException onException;
+
 		public InnerFutureTask(@NotNull Callable<P> callable) {
 			super(callable);
 			this.thread = new Thread(this);
 		}
 
 		@NotNull
-		public InnerFutureTask<P> setOnSuccess(@NotNull OnSuccess<P> onSuccess) {
+		public InnerFutureTask<P> setOnSuccess(@Nullable OnSuccess<P> onSuccess) {
 			this.onSuccess = onSuccess;
+			return this;
+		}
+
+		@NotNull
+		public InnerFutureTask<P> setOnException(@Nullable OnException onException) {
+			this.onException = onException;
 			return this;
 		}
 
