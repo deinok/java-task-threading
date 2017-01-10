@@ -123,7 +123,7 @@ public class Task<R> implements Promise<R> {
 	 */
 	@NotNull
 	public Task<R> onSuccess(@Nullable OnSuccess<R> onSuccess) {
-		this.innerFutureTask.setOnSuccess(onSuccess);
+		this.innerFutureTask.onSuccess(onSuccess);
 		return this;
 	}
 
@@ -135,11 +135,11 @@ public class Task<R> implements Promise<R> {
 	 */
 	@NotNull
 	public Task<R> onException(@Nullable OnException onException) {
-		this.innerFutureTask.setOnException(onException);
+		this.innerFutureTask.onException(onException);
 		return this;
 	}
 
-	private class InnerFutureTask<P> extends FutureTask<P> {
+	private class InnerFutureTask<P> extends FutureTask<P> implements Promise<P> {
 
 		@NotNull
 		private final Thread thread;
@@ -156,18 +156,6 @@ public class Task<R> implements Promise<R> {
 		}
 
 		@NotNull
-		public InnerFutureTask<P> setOnSuccess(@Nullable OnSuccess<P> onSuccess) {
-			this.onSuccess = onSuccess;
-			return this;
-		}
-
-		@NotNull
-		public InnerFutureTask<P> setOnException(@Nullable OnException onException) {
-			this.onException = onException;
-			return this;
-		}
-
-		@NotNull
 		public InnerFutureTask<P> executeAsync() {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.start();
@@ -180,6 +168,18 @@ public class Task<R> implements Promise<R> {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.run();
 			}
+			return this;
+		}
+
+		@NotNull
+		public Promise<P> onSuccess(@Nullable OnSuccess<P> onSuccess) {
+			this.onSuccess = onSuccess;
+			return this;
+		}
+
+		@NotNull
+		public Promise<P> onException(@Nullable OnException onException) {
+			this.onException = onException;
 			return this;
 		}
 
