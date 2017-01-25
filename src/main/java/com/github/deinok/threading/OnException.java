@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public interface OnException {
 
 	/**
-	 * Executed when a Promise throws an exception
+	 * Executed when a IPromise throws an exception
 	 *
 	 * @param exception A RuntimeThreadException
 	 */

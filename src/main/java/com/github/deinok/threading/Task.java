@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
  *
  * @param <R> The Result Type
  */
-public class Task<R> implements Promise<R> {
+public class Task<R> implements IPromise<R>, IDeferred<R> {
 
 	//region Variables
 	@NotNull
@@ -139,7 +139,7 @@ public class Task<R> implements Promise<R> {
 		return this;
 	}
 
-	private class InnerFutureTask<P> extends FutureTask<P> implements Promise<P> {
+	private class InnerFutureTask<P> extends FutureTask<P> implements IPromise<P> {
 
 		@NotNull
 		private final Thread thread;
@@ -172,13 +172,13 @@ public class Task<R> implements Promise<R> {
 		}
 
 		@NotNull
-		public Promise<P> onSuccess(@Nullable OnSuccess<P> onSuccess) {
+		public IPromise<P> onSuccess(@Nullable OnSuccess<P> onSuccess) {
 			this.onSuccess = onSuccess;
 			return this;
 		}
 
 		@NotNull
-		public Promise<P> onException(@Nullable OnException onException) {
+		public IPromise<P> onException(@Nullable OnException onException) {
 			this.onException = onException;
 			return this;
 		}
