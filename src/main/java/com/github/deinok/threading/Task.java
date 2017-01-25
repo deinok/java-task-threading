@@ -56,6 +56,22 @@ public class Task<R> implements IPromise<R>, IDeferred<R> {
 	//region Executors
 
 	/**
+	 * Executes the Task in the selected mode
+	 *
+	 * @param executionMode The Execution Mode
+	 * @return The Task
+	 */
+	public Task<R> execute(@NotNull ExecutionMode executionMode) {
+		switch (executionMode) {
+			case SYNC:
+				return this.executeSync();
+			case ASYNC:
+				return this.executeAsync();
+		}
+		throw new IllegalStateException();
+	}
+
+	/**
 	 * Executes the Task Asynchronous
 	 *
 	 * @return The Task
