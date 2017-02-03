@@ -6,7 +6,7 @@
 
     <groupId>com.github.deinok</groupId>
     <artifactId>java-task-threading</artifactId>
-	<version>0.1.2</version>
+	<version>0.1.3</version>
     <packaging>jar</packaging>
 
 
