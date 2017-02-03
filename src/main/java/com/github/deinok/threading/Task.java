@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
  *
  * @param <R> The Result Type
  */
-public class Task<R> implements IPromise<R>, IDeferred<R> {
+public class Task<R> implements ITask<R> {
 
 	//region Variables
 	@NotNull
@@ -31,6 +31,8 @@ public class Task<R> implements IPromise<R>, IDeferred<R> {
 	}
 
 	//endregion
+
+	//region Priority
 
 	/**
 	 * Gets the priority of the Task
@@ -52,6 +54,8 @@ public class Task<R> implements IPromise<R>, IDeferred<R> {
 		this.innerFutureTask.setPriority(priority);
 		return this;
 	}
+
+	//endregion
 
 	//region Executors
 
