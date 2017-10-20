@@ -16,7 +16,7 @@ public class Task<R> implements ITask<R> {
 
 	//region Variables
 	@NotNull
-	private final InnerFutureTask<R> innerFutureTask;
+	private final InternalFutureTask<R> internalFutureTask;
 	//endregion
 
 	//region Constructors
@@ -27,7 +27,7 @@ public class Task<R> implements ITask<R> {
 	 * @param callable The callable function
 	 */
 	public Task(@NotNull final Callable<R> callable) {
-		this.innerFutureTask = new InnerFutureTask<R>(callable);
+		this.internalFutureTask = new InternalFutureTask<R>(callable);
 	}
 
 	//endregion
@@ -40,7 +40,7 @@ public class Task<R> implements ITask<R> {
 	 * @return The Priority
 	 */
 	public int getPriority() {
-		return this.innerFutureTask.getPriority();
+		return this.internalFutureTask.getPriority();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public Task<R> setPriority(int priority) {
-		this.innerFutureTask.setPriority(priority);
+		this.internalFutureTask.setPriority(priority);
 		return this;
 	}
 
@@ -82,7 +82,7 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public Task<R> executeAsync() {
-		this.innerFutureTask.executeAsync();
+		this.internalFutureTask.executeAsync();
 		return this;
 	}
 
@@ -93,7 +93,7 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public Task<R> executeSync() {
-		this.innerFutureTask.executeSync();
+		this.internalFutureTask.executeSync();
 		return this;
 	}
 	//endregion
@@ -104,7 +104,7 @@ public class Task<R> implements ITask<R> {
 	 * @return Returns if it is canceled
 	 */
 	public boolean cancel() {
-		return this.innerFutureTask.cancel(true);
+		return this.internalFutureTask.cancel(true);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public Task<R> await() throws RuntimeThreadException {
-		this.innerFutureTask.await();
+		this.internalFutureTask.await();
 		return this;
 	}
 
@@ -127,7 +127,7 @@ public class Task<R> implements ITask<R> {
 	@Nullable
 	public R getResult() throws RuntimeThreadException {
 		try {
-			return this.innerFutureTask.executeAsync().get();
+			return this.internalFutureTask.executeAsync().get();
 		} catch (ExecutionException e) {
 			throw new RuntimeThreadException(e.getCause());
 		} catch (InterruptedException e) {
@@ -143,7 +143,7 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public Task<R> onSuccess(@Nullable OnSuccess<R> onSuccess) {
-		this.innerFutureTask.onSuccess(onSuccess);
+		this.internalFutureTask.onSuccess(onSuccess);
 		return this;
 	}
 
@@ -155,11 +155,11 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public Task<R> onException(@Nullable OnException onException) {
-		this.innerFutureTask.onException(onException);
+		this.internalFutureTask.onException(onException);
 		return this;
 	}
 
-	private class InnerFutureTask<P> extends FutureTask<P> implements IPromise<P> {
+	private class InternalFutureTask<P> extends FutureTask<P> implements IPromise<P> {
 
 		@NotNull
 		private final Thread thread;
@@ -170,13 +170,13 @@ public class Task<R> implements ITask<R> {
 		@Nullable
 		private OnException onException;
 
-		public InnerFutureTask(@NotNull Callable<P> callable) {
+		public InternalFutureTask(@NotNull Callable<P> callable) {
 			super(callable);
 			this.thread = new Thread(this);
 		}
 
 		@NotNull
-		public InnerFutureTask<P> executeAsync() {
+		public InternalFutureTask<P> executeAsync() {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.start();
 			}
@@ -184,7 +184,7 @@ public class Task<R> implements ITask<R> {
 		}
 
 		@NotNull
-		public InnerFutureTask<P> executeSync() {
+		public InternalFutureTask<P> executeSync() {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.run();
 			}
@@ -208,7 +208,7 @@ public class Task<R> implements ITask<R> {
 		}
 
 		@NotNull
-		public InnerFutureTask<P> setPriority(int newPriority) {
+		public InternalFutureTask<P> setPriority(int newPriority) {
 			if (this.thread.getState() == Thread.State.NEW) {
 				this.thread.setPriority(newPriority);
 			}
@@ -216,7 +216,7 @@ public class Task<R> implements ITask<R> {
 		}
 
 		@NotNull
-		public InnerFutureTask<P> await() throws RuntimeThreadException {
+		public InternalFutureTask<P> await() throws RuntimeThreadException {
 			switch (this.thread.getState()) {
 				case NEW:
 					return this.executeAsync().await();

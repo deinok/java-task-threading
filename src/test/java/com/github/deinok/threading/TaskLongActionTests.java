@@ -15,7 +15,7 @@ public class TaskLongActionTests {
 	public void internetTest() {
 		final Task<String> stringTask = new Task<String>(new Callable<String>() {
 			public String call() throws Exception {
-				final URL url = new URL("http://example.com/");
+				final URL url = new URL("http://example.org/");
 				final InputStream inputStream = url.openConnection().getInputStream();  // throws an IOException
 				final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
