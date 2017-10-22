@@ -82,7 +82,9 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static <TResult> Task<TResult> run(@NotNull final Callable<TResult> function) {
-		return new Task<TResult>(function).start();
+		Task<TResult> task = new Task<TResult>(function);
+		task.start();
+		return task;
 	}
 
 	/**
@@ -234,14 +236,10 @@ public class Task<R> {
 	//region Executors
 
 	/**
-	 * Executes the Task Asynchronous
-	 *
-	 * @return The Task
+	 * Starts the Task, scheduling it for execution to the current TaskScheduler.
 	 */
-	@NotNull
-	public Task<R> start() {
+	public void start() {
 		this.internalFutureTask.executeAsync();
-		return this;
 	}
 
 	/**
