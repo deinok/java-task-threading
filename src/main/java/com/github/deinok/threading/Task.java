@@ -87,7 +87,7 @@ public class Task<R> implements ITask<R> {
 	 * @param tasks An array of Task instances on which to wait
 	 */
 	public static void waitAll(@NotNull final Task<Object>[] tasks) {
-		for (Task<Object> task : tasks) {
+		for (final Task<Object> task : tasks) {
 			task.await();
 		}
 	}
@@ -110,7 +110,13 @@ public class Task<R> implements ITask<R> {
 	 */
 	@NotNull
 	public static Task<Void> whenAll(@NotNull final Task<Object>[] tasks) {
-		throw new RuntimeException("Not Implemented");
+		return new Task<Void>(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				Task.waitAll(tasks);
+				return null;
+			}
+		});
 	}
 
 	/**
