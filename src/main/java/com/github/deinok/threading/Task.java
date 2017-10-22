@@ -219,7 +219,10 @@ public class Task<R> {
 	 * @return true if the task has completed; otherwise false
 	 */
 	public boolean isCompleted() {
-		throw new RuntimeException("Not Implemented");
+		final TaskStatus taskStatus = this.getStatus();
+		return taskStatus == TaskStatus.Canceled
+			|| taskStatus == TaskStatus.Faulted
+			|| taskStatus == TaskStatus.RanToCompletion;
 	}
 
 	/**
@@ -247,6 +250,7 @@ public class Task<R> {
 	 */
 	public void runSynchronously() {
 		this.internalFutureTask.executeSync();
+		this.internalFutureTask.await();
 	}
 	//endregion
 
