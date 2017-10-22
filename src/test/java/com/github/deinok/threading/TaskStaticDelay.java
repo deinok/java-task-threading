@@ -6,12 +6,13 @@ public class TaskStaticDelay {
 
 	@Test(timeout = 100)
 	public void delayNotWaitFact() {
-		Task<Void> task = Task.delay(900);
+		Task task = Task.delay(900);
+		task.executeAsync();
 	}
 
-	@Test(timeout = 1000)
+	@Test(timeout = 150)
 	public void delayWaitFact() {
-		Task<Void> task = Task.delay(900);
+		Task task = Task.delay(100);
 		task.getResult();
 	}
 
