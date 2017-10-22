@@ -173,6 +173,31 @@ public class Task<R> {
 		return Long.valueOf(this.internalFutureTask.thread.getId()).intValue();
 	}
 
+	/**
+	 * Gets the TaskStatus of this task
+	 *
+	 * @return The current TaskStatus of this task instance
+	 */
+	@NotNull
+	public TaskStatus getStatus() {
+		switch (this.internalFutureTask.thread.getState()) {
+			case BLOCKED:
+				return TaskStatus.WaitingForChildrenToComplete;
+			case NEW:
+				return TaskStatus.Created;
+			case RUNNABLE:
+				return TaskStatus.WaitingToRun;
+			case TERMINATED:
+				return TaskStatus.RanToCompletion;
+			case TIMED_WAITING:
+				return TaskStatus.WaitingForActivation;
+			case WAITING:
+				return TaskStatus.WaitingToRun;
+			default:
+				throw new RuntimeException("Imposible State");
+		}
+	}
+
 	//endregion
 
 	//region Priority
