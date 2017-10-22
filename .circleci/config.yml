@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/java-task-therading/
+    docker:
+      - image: microsoft/maven:3.5
+    steps:
+      - checkout
+      
+      # Test
+      - restore_cache:
+          key: MAVEN
+      - run: mvn test
+      - save_cache:
+          key: MAVEN
+          paths:
+            - ~/.m2/
+      
