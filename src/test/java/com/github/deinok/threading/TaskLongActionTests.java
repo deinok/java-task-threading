@@ -19,12 +19,12 @@ public class TaskLongActionTests {
 				final InputStream inputStream = url.openConnection().getInputStream();  // throws an IOException
 				final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-				String result = "";
+				StringBuilder result = new StringBuilder();
 				String temporaryString;
 				while ((temporaryString = bufferedReader.readLine()) != null) {
-					result += temporaryString + "\n";
+					result.append(temporaryString).append("\n");
 				}
-				return result;
+				return result.toString();
 			}
 		}).executeAsync();
 
