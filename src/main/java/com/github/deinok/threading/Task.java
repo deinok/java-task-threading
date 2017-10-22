@@ -179,6 +179,23 @@ public class Task<R> {
 	}
 
 	/**
+	 * Gets the result value of this Task<TResult>
+	 *
+	 * @return he result value of this Task<TResult>, which is the same type as the task's type parameter
+	 * @throws RuntimeThreadException The probable Exception throw by the Thread
+	 */
+	@Nullable
+	public R getResult() throws RuntimeThreadException {
+		try {
+			return this.internalFutureTask.executeAsync().get();
+		} catch (ExecutionException e) {
+			throw new RuntimeThreadException(e.getCause());
+		} catch (InterruptedException e) {
+			throw new RuntimeThreadException(e);
+		}
+	}
+
+	/**
 	 * Gets the TaskStatus of this task
 	 *
 	 * @return The current TaskStatus of this task instance
@@ -280,47 +297,6 @@ public class Task<R> {
 	@NotNull
 	public Task<R> await() throws RuntimeThreadException {
 		this.internalFutureTask.await();
-		return this;
-	}
-
-	/**
-	 * Gets the result value of this Task<TResult>
-	 *
-	 * @return he result value of this Task<TResult>, which is the same type as the task's type parameter
-	 * @throws RuntimeThreadException The probable Exception throw by the Thread
-	 */
-	@Nullable
-	public R getResult() throws RuntimeThreadException {
-		try {
-			return this.internalFutureTask.executeAsync().get();
-		} catch (ExecutionException e) {
-			throw new RuntimeThreadException(e.getCause());
-		} catch (InterruptedException e) {
-			throw new RuntimeThreadException(e);
-		}
-	}
-
-	/**
-	 * Callback executed when the Task result is ready
-	 *
-	 * @param onSuccess The Callback Interface
-	 * @return The Task
-	 */
-	@NotNull
-	public Task<R> onSuccess(@Nullable OnSuccess<R> onSuccess) {
-		this.internalFutureTask.onSuccess(onSuccess);
-		return this;
-	}
-
-	/**
-	 * Callback executed when the Task ends with an exception
-	 *
-	 * @param onException The Callback Interface
-	 * @return The Task
-	 */
-	@NotNull
-	public Task<R> onException(@Nullable OnException onException) {
-		this.internalFutureTask.onException(onException);
 		return this;
 	}
 
