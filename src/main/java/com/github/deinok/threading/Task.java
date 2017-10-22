@@ -238,6 +238,17 @@ public class Task<R> {
 	//region Executors
 
 	/**
+	 * Creates a continuation that executes asynchronously when the target task completes
+	 *
+	 * @param continuationAction An action to run when the antecedent Task<TResult> completes. When run, the delegate will be passed the completed task as an argument
+	 * @return A new continuation task
+	 */
+	@NotNull
+	public Task<Void> continueWith(@NotNull final ContinueWithAction<R> continuationAction) {
+		throw new RuntimeException("Not Implemented");
+	}
+
+	/**
 	 * Starts the Task, scheduling it for execution to the current TaskScheduler.
 	 */
 	public void start() {
