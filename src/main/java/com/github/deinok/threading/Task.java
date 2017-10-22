@@ -22,7 +22,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static Task<Void> getCompletedTask() {
-		Task<Void> task = new Task<Void>(new Callable<Void>() {
+		final Task<Void> task = new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
 				return null;
@@ -62,7 +62,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static <TResult> Task<TResult> fromResult(final TResult result) {
-		Task<TResult> task = new Task<TResult>(new Callable<TResult>() {
+		final Task<TResult> task = new Task<TResult>(new Callable<TResult>() {
 			@Override
 			public TResult call() throws Exception {
 				return result;
@@ -81,7 +81,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static <TResult> Task<TResult> run(@NotNull final Callable<TResult> function) {
-		Task<TResult> task = new Task<TResult>(function);
+		final Task<TResult> task = new Task<TResult>(function);
 		task.start();
 		return task;
 	}
@@ -245,7 +245,15 @@ public class Task<R> {
 	 */
 	@NotNull
 	public Task<Void> continueWith(@NotNull final ContinueWithAction<R> continuationAction) {
-		throw new RuntimeException("Not Implemented");
+		final Task<R> thisTask = this;
+		return new Task<Void>(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				thisTask.await();
+				continuationAction.continueAction(thisTask);
+				return null;
+			}
+		});
 	}
 
 	/**
