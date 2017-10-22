@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class TaskStaticGetCompletedTask {
 
-	@Test(timeout = 100)
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void getCompletedTaskFact() {
 		Task.getCompletedTask().await();
 	}

@@ -4,15 +4,15 @@ import org.junit.Test;
 
 public class TaskStaticDelay {
 
-	@Test(timeout = 100)
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void delayNotWaitFact() {
-		Task task = Task.delay(900);
+		Task task = Task.delay(Constants.Default125PercentTimeOut);
 		task.executeAsync();
 	}
 
-	@Test(timeout = 150)
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void delayWaitFact() {
-		Task task = Task.delay(100);
+		Task task = Task.delay(Constants.Default90PercentTimeOut);
 		task.getResult();
 	}
 
