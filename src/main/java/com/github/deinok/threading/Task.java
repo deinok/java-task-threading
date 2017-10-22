@@ -144,6 +144,10 @@ public class Task<R> implements ITask<R> {
 
 	//endregion
 
+	//region Properties
+
+	//endregion
+
 	//region Priority
 
 	/**
