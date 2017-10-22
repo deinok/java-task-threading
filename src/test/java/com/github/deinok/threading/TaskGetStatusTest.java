@@ -30,4 +30,20 @@ public class TaskGetStatusTest extends BaseTest {
 		Assert.assertEquals(TaskStatus.RanToCompletion, task.getStatus());
 	}
 
+	@Test
+	public void runningFact() throws InterruptedException {
+		Task<Void> task = new Task<Void>(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				StringBuilder stringBuilder = new StringBuilder(1000);
+				for (int i = 0; i < stringBuilder.capacity(); i++) {
+					stringBuilder.append(i);
+				}
+				return null;
+			}
+		});
+		task.executeAsync();
+		Assert.assertEquals(TaskStatus.Running, task.getStatus());
+	}
+
 }

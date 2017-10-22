@@ -186,7 +186,7 @@ public class Task<R> {
 			case NEW:
 				return TaskStatus.Created;
 			case RUNNABLE:
-				return TaskStatus.WaitingToRun;
+				return TaskStatus.Running;
 			case TERMINATED:
 				return TaskStatus.RanToCompletion;
 			case TIMED_WAITING:
