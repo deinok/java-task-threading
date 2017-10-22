@@ -210,7 +210,7 @@ public class Task<R> {
 	 * @return true if the task has completed due to being canceled; otherwise false
 	 */
 	public boolean isCanceled() {
-		throw new RuntimeException("Not Implemented");
+		return this.getStatus() == TaskStatus.Canceled;
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class Task<R> {
 	 * @return true if the task has thrown an unhandled exception; otherwise false
 	 */
 	public boolean isFaulted() {
-		throw new RuntimeException("Not Implemented");
+		return this.getStatus() == TaskStatus.Faulted;
 	}
 
 	//endregion
