@@ -86,7 +86,7 @@ public class Task<R> {
 	 *
 	 * @param tasks An array of Task instances on which to wait
 	 */
-	public static void waitAll(@NotNull final Task<Object>... tasks) {
+	public static void waitAll(@NotNull final Task... tasks) {
 		for (final Task<Object> task : tasks) {
 			task.await();
 		}
@@ -98,7 +98,7 @@ public class Task<R> {
 	 * @param tasks An array of Task instances on which to wait
 	 * @return The index of the completed Task object in the tasks array
 	 */
-	public static int waitAny(@NotNull final Task<Object>... tasks) {
+	public static int waitAny(@NotNull final Task... tasks) {
 		while (true) {
 			for (int i = 0; i < tasks.length; i++) {
 				tasks[i].executeAsync();
@@ -116,7 +116,7 @@ public class Task<R> {
 	 * @return A task that represents the completion of all of the supplied tasks
 	 */
 	@NotNull
-	public static Task<Void> whenAll(@NotNull final Task<Object>... tasks) {
+	public static Task<Void> whenAll(@NotNull final Task... tasks) {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -133,10 +133,10 @@ public class Task<R> {
 	 * @return A task that represents the completion of one of the supplied tasks. The return task's Result is the task that completed
 	 */
 	@NotNull
-	public static Task<Task<Object>> whenAny(@NotNull final Task<Object>... tasks) {
-		return new Task<Task<Object>>(new Callable<Task<Object>>() {
+	public static Task<Task> whenAny(@NotNull final Task... tasks) {
+		return new Task<Task>(new Callable<Task>() {
 			@Override
-			public Task<Object> call() throws Exception {
+			public Task call() throws Exception {
 				return tasks[Task.waitAny(tasks)];
 			}
 		});
