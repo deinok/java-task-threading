@@ -324,5 +324,10 @@ public class Task<R> {
 		return this;
 	}
 
+	public interface ContinueWithAction<TResult> {
+
+		void continueAction(@NotNull Task<TResult> antecedentTask) throws Exception;
+
+	}
 
 }

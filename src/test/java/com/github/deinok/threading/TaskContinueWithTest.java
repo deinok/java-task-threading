@@ -19,7 +19,7 @@ public class TaskContinueWithTest extends BaseTest {
 		});
 		Assert.assertTrue(initialTask.getStatus() == TaskStatus.Created);
 
-		final Task<Void> finalTask = initialTask.continueWith(new ContinueWithAction<Integer>() {
+		final Task<Void> finalTask = initialTask.continueWith(new Task.ContinueWithAction<Integer>() {
 			@Override
 			public void continueAction(@NotNull Task<Integer> antecedentTask) throws Exception {
 				Assert.assertTrue(antecedentTask.isCompleted());
