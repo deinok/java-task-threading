@@ -3,7 +3,7 @@ package com.github.deinok.threading;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TaskStaticWaitAny extends BaseTest {
+public class TaskStaticWaitAnyTest extends BaseTest {
 
 	@Test(timeout = Constants.DefaultTimeOut)
 	public void waitAnyFact1() {

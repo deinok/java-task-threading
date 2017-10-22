@@ -2,7 +2,7 @@ package com.github.deinok.threading;
 
 import org.junit.Test;
 
-public class TaskStaticDelay extends BaseTest {
+public class TaskStaticDelayTest extends BaseTest {
 
 	@Test(timeout = Constants.DefaultTimeOut)
 	public void delayNotWaitFact() {

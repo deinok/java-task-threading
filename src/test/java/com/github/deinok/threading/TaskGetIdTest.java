@@ -3,7 +3,7 @@ package com.github.deinok.threading;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TaskGetId extends BaseTest {
+public class TaskGetIdTest extends BaseTest {
 
 	@Test
 	public void getIdFact() {

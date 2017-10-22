@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.concurrent.Callable;
 
-public class TaskStaticRun extends BaseTest {
+public class TaskStaticRunTest extends BaseTest {
 
 	@Test
 	public void taskRunFact() {

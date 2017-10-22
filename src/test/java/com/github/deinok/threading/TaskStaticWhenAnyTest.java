@@ -3,7 +3,7 @@ package com.github.deinok.threading;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TaskStaticWhenAny extends BaseTest {
+public class TaskStaticWhenAnyTest extends BaseTest {
 
 	@Test(timeout = Constants.DefaultTimeOut)
 	public void whenAnyFact1() {
