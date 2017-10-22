@@ -3,7 +3,7 @@ package com.github.deinok.threading;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TaskStaticFromResult {
+public class TaskStaticFromResult extends BaseTest {
 
 	@Test(timeout = 100)
 	public void fromResultFact() {
