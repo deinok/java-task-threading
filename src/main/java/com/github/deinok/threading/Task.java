@@ -266,9 +266,9 @@ public class Task<R> {
 	}
 
 	/**
-	 * Gets the result of the Task
+	 * Gets the result value of this Task<TResult>
 	 *
-	 * @return The Result
+	 * @return he result value of this Task<TResult>, which is the same type as the task's type parameter
 	 * @throws RuntimeThreadException The probable Exception throw by the Thread
 	 */
 	@Nullable
