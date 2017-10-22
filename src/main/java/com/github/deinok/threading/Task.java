@@ -86,7 +86,7 @@ public class Task<R> implements ITask<R> {
 	 *
 	 * @param tasks An array of Task instances on which to wait
 	 */
-	public static void waitAll(@NotNull final Task<Object>[] tasks) {
+	public static void waitAll(@NotNull final Task<Object>... tasks) {
 		for (final Task<Object> task : tasks) {
 			task.await();
 		}
