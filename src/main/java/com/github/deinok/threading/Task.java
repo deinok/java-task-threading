@@ -87,7 +87,7 @@ public class Task<R> {
 	 * @param tasks An array of Task instances on which to wait
 	 */
 	public static void waitAll(@NotNull final Task... tasks) {
-		for (final Task<Object> task : tasks) {
+		for (final Task task : tasks) {
 			task.await();
 		}
 	}
