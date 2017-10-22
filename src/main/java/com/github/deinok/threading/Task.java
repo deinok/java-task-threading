@@ -98,7 +98,7 @@ public class Task<R> implements ITask<R> {
 	 * @param tasks An array of Task instances on which to wait
 	 * @return The index of the completed Task object in the tasks array
 	 */
-	public static int waitAny(@NotNull final Task<Object>[] tasks) {
+	public static int waitAny(@NotNull final Task<Object>... tasks) {
 		throw new RuntimeException("Not Implemented");
 	}
 
@@ -109,7 +109,7 @@ public class Task<R> implements ITask<R> {
 	 * @return A task that represents the completion of all of the supplied tasks
 	 */
 	@NotNull
-	public static Task whenAll(@NotNull final Task<Object>[] tasks) {
+	public static Task whenAll(@NotNull final Task<Object>... tasks) {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -126,7 +126,7 @@ public class Task<R> implements ITask<R> {
 	 * @return A task that represents the completion of one of the supplied tasks. The return task's Result is the task that completed
 	 */
 	@NotNull
-	public static Task whenAny(@NotNull final Task<Object>[] tasks) {
+	public static Task whenAny(@NotNull final Task<Object>... tasks) {
 		throw new RuntimeException("Not Implemented");
 	}
 
