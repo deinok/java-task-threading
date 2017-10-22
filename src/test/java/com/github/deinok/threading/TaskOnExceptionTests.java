@@ -12,7 +12,7 @@ public class TaskOnExceptionTests {
 	@Test
 	public void onExceptionTest1() {
 		final RuntimeException testedException = new RuntimeException("OK");
-		final RuntimeThreadException[] exceptionCatched = new RuntimeThreadException[1];
+		final RuntimeThreadException[] exceptionCatch = new RuntimeThreadException[1];
 
 		final Task<Void> task = new Task<Void>(new Callable<Void>() {
 			public Void call() throws Exception {
@@ -21,20 +21,20 @@ public class TaskOnExceptionTests {
 			}
 		}).onException(new OnException() {
 			public void execute(@NotNull RuntimeThreadException exception) {
-				exceptionCatched[0] = exception;
+				exceptionCatch[0] = exception;
 			}
 		}).executeAsync();
 
 		task.await();
 
-		Assert.assertEquals(testedException, exceptionCatched[0].getCause());
+		Assert.assertEquals(testedException, exceptionCatch[0].getCause());
 
 	}
 
 	@Test
 	public void onExceptionTest2() {
 		final RuntimeException testedException = new RuntimeException("OK");
-		final RuntimeThreadException[] exceptionCatched = new RuntimeThreadException[1];
+		final RuntimeThreadException[] exceptionCatch = new RuntimeThreadException[1];
 
 		final Task<Void> task = new Task<Void>(new Callable<Void>() {
 			public Void call() throws Exception {
@@ -47,13 +47,13 @@ public class TaskOnExceptionTests {
 			}
 		}).onException(new OnException() {
 			public void execute(@NotNull RuntimeThreadException exception) {
-				exceptionCatched[0] = exception;
+				exceptionCatch[0] = exception;
 			}
 		}).executeAsync();
 
 		task.await();
 
-		Assert.assertEquals(testedException, exceptionCatched[0].getCause());
+		Assert.assertEquals(testedException, exceptionCatch[0].getCause());
 
 	}
 
