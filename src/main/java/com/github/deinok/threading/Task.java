@@ -38,8 +38,18 @@ public class Task<R> implements ITask<R> {
 	 * @return A task that represents the time delay
 	 */
 	@NotNull
-	public static Task<Void> delay(int millisecondsDelay) {
-		throw new RuntimeException("Not Implemented");
+	public static Task<Void> delay(final int millisecondsDelay) {
+		return new Task<Void>(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				if (millisecondsDelay == -1) {
+					Thread.sleep(Integer.MAX_VALUE);
+				} else {
+					Thread.sleep(millisecondsDelay);
+				}
+				return null;
+			}
+		});
 	}
 
 	/**
