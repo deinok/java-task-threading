@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
  *
  * @param <R> The type of the result produced by this Task<R>
  */
-public class Task<R> implements ITask<R> {
+public class Task<R> {
 
 	//region Static
 

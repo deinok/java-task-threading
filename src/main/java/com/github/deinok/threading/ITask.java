@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <R> The Result Type
  */
-public interface ITask<R> extends IDeferred<R>, IPromise<R> {
+interface ITask<R> extends IDeferred<R>, IPromise<R> {
 
 	//region Priority
 

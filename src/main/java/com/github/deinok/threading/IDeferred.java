@@ -5,7 +5,7 @@ package com.github.deinok.threading;
  *
  * @param <R> The return type
  */
-public interface IDeferred<R> {
+interface IDeferred<R> {
 
 	/**
 	 * Gets the result of a deferred instance

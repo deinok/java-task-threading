@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <R> The Return Type
  */
-public interface IPromise<R> {
+interface IPromise<R> {
 
 	/**
 	 * Sets the action to execute when the IPromise ends successful
