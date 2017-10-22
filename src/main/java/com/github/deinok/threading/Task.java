@@ -22,7 +22,7 @@ public class Task<R> {
 	 * @return The successfully completed task
 	 */
 	@NotNull
-	public static Task getCompletedTask() {
+	public static Task<Void> getCompletedTask() {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -38,7 +38,7 @@ public class Task<R> {
 	 * @return A task that represents the time delay
 	 */
 	@NotNull
-	public static Task delay(final int millisecondsDelay) {
+	public static Task<Void> delay(final int millisecondsDelay) {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -99,9 +99,6 @@ public class Task<R> {
 	 * @return The index of the completed Task object in the tasks array
 	 */
 	public static int waitAny(@NotNull final Task<Object>... tasks) {
-		for (final Task<Object> task : tasks) {
-			task.executeAsync();
-		}
 		while (true) {
 			for (int i = 0; i < tasks.length; i++) {
 				tasks[i].executeAsync();
@@ -119,7 +116,7 @@ public class Task<R> {
 	 * @return A task that represents the completion of all of the supplied tasks
 	 */
 	@NotNull
-	public static Task whenAll(@NotNull final Task<Object>... tasks) {
+	public static Task<Void> whenAll(@NotNull final Task<Object>... tasks) {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -136,8 +133,13 @@ public class Task<R> {
 	 * @return A task that represents the completion of one of the supplied tasks. The return task's Result is the task that completed
 	 */
 	@NotNull
-	public static Task whenAny(@NotNull final Task<Object>... tasks) {
-		throw new RuntimeException("Not Implemented");
+	public static Task<Task<Object>> whenAny(@NotNull final Task<Object>... tasks) {
+		return new Task<Task<Object>>(new Callable<Task<Object>>() {
+			@Override
+			public Task<Object> call() throws Exception {
+				return tasks[Task.waitAny(tasks)];
+			}
+		});
 	}
 
 	//endregion
