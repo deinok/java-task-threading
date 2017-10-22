@@ -8,9 +8,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
- * A Task in parallel
+ * Represents an asynchronous operation that can return a value
  *
- * @param <R> The Result Type
+ * @param <R> The type of the result produced by this Task<R>
  */
 public class Task<R> implements ITask<R> {
 
@@ -67,6 +67,61 @@ public class Task<R> implements ITask<R> {
 				return result;
 			}
 		}).executeSync();
+	}
+
+	/**
+	 * Queues the specified work to run on the thread pool and returns a Task<TResult> object that represents that work
+	 *
+	 * @param function  The work to execute asynchronously
+	 * @param <TResult> The return type of the task
+	 * @return A task object that represents the work queued to execute in the thread pool
+	 */
+	@NotNull
+	public static <TResult> Task<TResult> run(@NotNull final Callable<TResult> function) {
+		return new Task<TResult>(function).executeAsync();
+	}
+
+	/**
+	 * Waits for all of the provided Task objects to complete execution
+	 *
+	 * @param tasks An array of Task instances on which to wait
+	 */
+	public static void waitAll(@NotNull final Task<Object>[] tasks) {
+		for (Task<Object> task : tasks) {
+			task.await();
+		}
+	}
+
+	/**
+	 * Waits for any of the provided Task objects to complete execution
+	 *
+	 * @param tasks An array of Task instances on which to wait
+	 * @return The index of the completed Task object in the tasks array
+	 */
+	public static int waitAny(@NotNull final Task<Object>[] tasks) {
+		throw new RuntimeException("Not Implemented");
+	}
+
+	/**
+	 * Creates a task that will complete when all of the Task objects in an array have completed
+	 *
+	 * @param tasks The tasks to wait on for completion.
+	 * @return A task that represents the completion of all of the supplied tasks
+	 */
+	@NotNull
+	public static Task<Void> whenAll(@NotNull final Task<Object>[] tasks) {
+		throw new RuntimeException("Not Implemented");
+	}
+
+	/**
+	 * Creates a task that will complete when any of the supplied tasks have completed
+	 *
+	 * @param tasks The tasks to wait on for completion
+	 * @return A task that represents the completion of one of the supplied tasks. The return task's Result is the task that completed
+	 */
+	@NotNull
+	public static Task<Void> whenAny(@NotNull final Task<Object>[] tasks) {
+		throw new RuntimeException("Not Implemented");
 	}
 
 	//endregion
