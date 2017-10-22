@@ -11,6 +11,9 @@ jobs:
       - restore_cache:
           key: MAVEN
       - run:
+          name: Maven Compile
+          command: mvn compile
+      - run:
           name: Maven Test
           command: mvn test
       - save_cache:
