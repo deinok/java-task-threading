@@ -15,7 +15,7 @@ public class TaskGetResultAsyncTests {
 				Thread.sleep(250);
 				return null;
 			}
-		}).executeAsync();
+		}).start();
 
 		Thread.sleep(250);
 

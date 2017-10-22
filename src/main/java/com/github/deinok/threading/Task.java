@@ -23,12 +23,14 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static Task<Void> getCompletedTask() {
-		return new Task<Void>(new Callable<Void>() {
+		Task<Void> task = new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
 				return null;
 			}
-		}).executeSync();
+		});
+		task.runSynchronously();
+		return task;
 	}
 
 	/**
@@ -61,12 +63,14 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static <TResult> Task<TResult> fromResult(final TResult result) {
-		return new Task<TResult>(new Callable<TResult>() {
+		Task<TResult> task = new Task<TResult>(new Callable<TResult>() {
 			@Override
 			public TResult call() throws Exception {
 				return result;
 			}
-		}).executeSync();
+		});
+		task.runSynchronously();
+		return task;
 	}
 
 	/**
@@ -78,7 +82,7 @@ public class Task<R> {
 	 */
 	@NotNull
 	public static <TResult> Task<TResult> run(@NotNull final Callable<TResult> function) {
-		return new Task<TResult>(function).executeAsync();
+		return new Task<TResult>(function).start();
 	}
 
 	/**
@@ -101,7 +105,7 @@ public class Task<R> {
 	public static int waitAny(@NotNull final Task... tasks) {
 		while (true) {
 			for (int i = 0; i < tasks.length; i++) {
-				tasks[i].executeAsync();
+				tasks[i].start();
 				if (tasks[i].internalFutureTask.thread.getState() == Thread.State.TERMINATED) {
 					return i;
 				}
@@ -227,48 +231,7 @@ public class Task<R> {
 
 	//endregion
 
-	//region Priority
-
-	/**
-	 * Gets the priority of the Task
-	 *
-	 * @return The Priority
-	 */
-	public int getPriority() {
-		return this.internalFutureTask.getPriority();
-	}
-
-	/**
-	 * Sets the priority
-	 *
-	 * @param priority The new Priority
-	 * @return The Task
-	 */
-	@NotNull
-	public Task<R> setPriority(int priority) {
-		this.internalFutureTask.setPriority(priority);
-		return this;
-	}
-
-	//endregion
-
 	//region Executors
-
-	/**
-	 * Executes the Task in the selected mode
-	 *
-	 * @param executionMode The Execution Mode
-	 * @return The Task
-	 */
-	public Task<R> execute(@NotNull ExecutionMode executionMode) {
-		switch (executionMode) {
-			case SYNC:
-				return this.executeSync();
-			case ASYNC:
-				return this.executeAsync();
-		}
-		throw new IllegalStateException();
-	}
 
 	/**
 	 * Executes the Task Asynchronous
@@ -276,31 +239,18 @@ public class Task<R> {
 	 * @return The Task
 	 */
 	@NotNull
-	public Task<R> executeAsync() {
+	public Task<R> start() {
 		this.internalFutureTask.executeAsync();
 		return this;
 	}
 
 	/**
-	 * Executes the Task Synchronous
-	 *
-	 * @return The Task
+	 * Runs the Task synchronously on the current TaskScheduler
 	 */
-	@NotNull
-	public Task<R> executeSync() {
+	public void runSynchronously() {
 		this.internalFutureTask.executeSync();
-		return this;
 	}
 	//endregion
-
-	/**
-	 * Cancel the Task
-	 *
-	 * @return Returns if it is canceled
-	 */
-	public boolean cancel() {
-		return this.internalFutureTask.cancel(true);
-	}
 
 	/**
 	 * Ensures that the result is ready to be returned

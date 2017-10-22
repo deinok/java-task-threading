@@ -7,7 +7,7 @@ public class TaskStaticDelayTest extends BaseTest {
 	@Test(timeout = Constants.DefaultTimeOut)
 	public void delayNotWaitFact() {
 		Task task = Task.delay(Constants.Default125PercentTimeOut);
-		task.executeAsync();
+		task.start();
 	}
 
 	@Test(timeout = Constants.DefaultTimeOut)

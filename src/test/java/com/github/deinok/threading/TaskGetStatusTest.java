@@ -42,7 +42,7 @@ public class TaskGetStatusTest extends BaseTest {
 				return null;
 			}
 		});
-		task.executeAsync();
+		task.start();
 		Assert.assertEquals(TaskStatus.Running, task.getStatus());
 	}
 
