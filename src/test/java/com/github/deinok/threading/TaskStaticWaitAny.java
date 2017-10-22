@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class TaskStaticWaitAny {
 
-	@Test
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void waitAnyFact() {
 
 	}

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class TaskStaticWhenAny {
 
-	@Test
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void whenAnyFact() {
 
 	}
