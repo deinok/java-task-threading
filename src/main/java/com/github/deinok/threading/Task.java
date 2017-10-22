@@ -198,6 +198,33 @@ public class Task<R> {
 		}
 	}
 
+	/**
+	 * Gets whether this Task instance has completed execution due to being canceled
+	 *
+	 * @return true if the task has completed due to being canceled; otherwise false
+	 */
+	public boolean isCanceled() {
+		throw new RuntimeException("Not Implemented");
+	}
+
+	/**
+	 * Gets whether this Task has completed
+	 *
+	 * @return true if the task has completed; otherwise false
+	 */
+	public boolean isCompleted() {
+		throw new RuntimeException("Not Implemented");
+	}
+
+	/**
+	 * Gets whether the Task completed due to an unhandled exception
+	 *
+	 * @return true if the task has thrown an unhandled exception; otherwise false
+	 */
+	public boolean isFaulted() {
+		throw new RuntimeException("Not Implemented");
+	}
+
 	//endregion
 
 	//region Priority

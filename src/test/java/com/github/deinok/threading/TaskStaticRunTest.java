@@ -7,12 +7,12 @@ import java.util.concurrent.Callable;
 
 public class TaskStaticRunTest extends BaseTest {
 
-	@Test
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void taskRunFact() {
 		Task<Integer> asyncTask = Task.run(new Callable<Integer>() {
 			@Override
 			public Integer call() throws Exception {
-				Thread.sleep(1000);
+				Thread.sleep(Constants.Default90PercentTimeOut);
 				return 5;
 			}
 		});

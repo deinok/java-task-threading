@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class TaskStaticFromResultTest extends BaseTest {
 
-	@Test(timeout = 100)
+	@Test(timeout = Constants.DefaultTimeOut)
 	public void fromResultFact() {
 		Assert.assertEquals(5, (int) Task.fromResult(5).getResult());
 	}
