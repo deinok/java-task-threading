@@ -22,7 +22,7 @@ public class Task<R> implements ITask<R> {
 	 * @return The successfully completed task
 	 */
 	@NotNull
-	public static Task<Void> getCompletedTask() {
+	public static Task getCompletedTask() {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -38,7 +38,7 @@ public class Task<R> implements ITask<R> {
 	 * @return A task that represents the time delay
 	 */
 	@NotNull
-	public static Task<Void> delay(final int millisecondsDelay) {
+	public static Task delay(final int millisecondsDelay) {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -109,7 +109,7 @@ public class Task<R> implements ITask<R> {
 	 * @return A task that represents the completion of all of the supplied tasks
 	 */
 	@NotNull
-	public static Task<Void> whenAll(@NotNull final Task<Object>[] tasks) {
+	public static Task whenAll(@NotNull final Task<Object>[] tasks) {
 		return new Task<Void>(new Callable<Void>() {
 			@Override
 			public Void call() throws Exception {
@@ -126,7 +126,7 @@ public class Task<R> implements ITask<R> {
 	 * @return A task that represents the completion of one of the supplied tasks. The return task's Result is the task that completed
 	 */
 	@NotNull
-	public static Task<Void> whenAny(@NotNull final Task<Object>[] tasks) {
+	public static Task whenAny(@NotNull final Task<Object>[] tasks) {
 		throw new RuntimeException("Not Implemented");
 	}
 
