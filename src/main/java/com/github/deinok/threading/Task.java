@@ -99,7 +99,17 @@ public class Task<R> {
 	 * @return The index of the completed Task object in the tasks array
 	 */
 	public static int waitAny(@NotNull final Task<Object>... tasks) {
-		throw new RuntimeException("Not Implemented");
+		for (final Task<Object> task : tasks) {
+			task.executeAsync();
+		}
+		while (true) {
+			for (int i = 0; i < tasks.length; i++) {
+				tasks[i].executeAsync();
+				if (tasks[i].internalFutureTask.thread.getState() == Thread.State.TERMINATED) {
+					return i;
+				}
+			}
+		}
 	}
 
 	/**
