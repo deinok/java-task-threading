@@ -164,6 +164,15 @@ public class Task<R> {
 
 	//region Properties
 
+	/**
+	 * Gets an ID for this Task instance
+	 *
+	 * @return The identifier that is assigned by the system to this Task instance
+	 */
+	public int getId() {
+		return Long.valueOf(this.internalFutureTask.thread.getId()).intValue();
+	}
+
 	//endregion
 
 	//region Priority
