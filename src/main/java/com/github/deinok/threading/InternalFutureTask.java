@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-class InternalFutureTask<P> extends FutureTask<P> implements IPromise<P> {
+class InternalFutureTask<P> extends FutureTask<P> implements InternalIPromise<P> {
 
 	@NotNull
 	public final Thread thread;
@@ -40,13 +40,13 @@ class InternalFutureTask<P> extends FutureTask<P> implements IPromise<P> {
 	}
 
 	@NotNull
-	public IPromise<P> onSuccess(@Nullable OnSuccess<P> onSuccess) {
+	public InternalIPromise<P> onSuccess(@Nullable OnSuccess<P> onSuccess) {
 		this.onSuccess = onSuccess;
 		return this;
 	}
 
 	@NotNull
-	public IPromise<P> onException(@Nullable OnException onException) {
+	public InternalIPromise<P> onException(@Nullable OnException onException) {
 		this.onException = onException;
 		return this;
 	}
