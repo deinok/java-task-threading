@@ -14,6 +14,53 @@ import java.util.concurrent.FutureTask;
  */
 public class Task<R> implements ITask<R> {
 
+	//region Static
+
+	/**
+	 * Gets a task that has already completed successfully
+	 *
+	 * @return The successfully completed task
+	 */
+	@NotNull
+	public static Task<Void> getCompletedTask() {
+		return new Task<Void>(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				return null;
+			}
+		}).executeSync();
+	}
+
+	/**
+	 * Creates a task that completes after a time delay
+	 *
+	 * @param millisecondsDelay The number of milliseconds to wait before completing the returned task, or -1 to wait indefinitely
+	 * @return A task that represents the time delay
+	 */
+	@NotNull
+	public static Task<Void> delay(int millisecondsDelay) {
+		throw new RuntimeException("Not Implemented");
+	}
+
+	/**
+	 * Creates a Task<TResult> that's completed successfully with the specified result
+	 *
+	 * @param result    The result to store into the completed task
+	 * @param <TResult> The type of the result returned by the task
+	 * @return The successfully completed task
+	 */
+	@NotNull
+	public static <TResult> Task<TResult> fromResult(final TResult result) {
+		return new Task<TResult>(new Callable<TResult>() {
+			@Override
+			public TResult call() throws Exception {
+				return result;
+			}
+		}).executeSync();
+	}
+
+	//endregion
+
 	//region Variables
 	@NotNull
 	private final InternalFutureTask<R> internalFutureTask;
